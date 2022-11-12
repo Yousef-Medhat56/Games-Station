@@ -6,3 +6,162 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Admin {
+  admin_id       String  @id @default(uuid())
+  email          String  @unique @db.VarChar(255)
+  username       String  @unique @db.VarChar(255)
+  first_name     String  @db.VarChar(255)
+  last_name      String  @db.VarChar(255)
+  password       String? @db.VarChar(255)
+  is_super_admin Boolean @default(false)
+  //One to Many relationship with the Game entity
+  games          Game[]
+}
+
+model Seller {
+  seller_id       Int      @id @default(autoincrement())
+  email           String   @unique @db.VarChar(255)
+  password        String   @db.VarChar(255)
+  username        String   @unique @db.VarChar(255)
+  store_name      String   @db.VarChar(255)
+  profile_img_url String?  @db.VarChar(255)
+  created_at      DateTime @default(now())
+  //One to Many relationship with the Game entity
+  games           Game[]
+}
+
+model Customer {
+  customer_id Int      @id @default(autoincrement())
+  email       String   @unique @db.VarChar(255)
+  password    String   @db.VarChar(255)
+  first_name  String   @db.VarChar(255)
+  last_name   String   @db.VarChar(255)
+  //One to Many relationship with the Order entity
+  orders      Order[]
+  //One to Many relatioship with the Review entity
+  reviews     Review[]
+}
+
+model Game {
+  game_id      Int             @id @default(autoincrement())
+  name         String          @db.VarChar(255)
+  handle       String          @unique @db.VarChar(255)
+  price        Float
+  quantity     Int
+  description  String
+  is_published Boolean         @default(false)
+  release_date DateTime
+  created_at   DateTime        @default(now())
+  // Many to One relationship with the Seller entity
+  seller       Seller          @relation(fields: [seller_id], references: [seller_id])
+  seller_id    Int
+  // Optional Many to One relationship with the Admin entity
+  admin        Admin?          @relation(fields: [admin_id], references: [admin_id])
+  admin_id     String?
+  //One to Many raltionship with the GameImage entity
+  images       GameImage[]
+  //Many to Many relationship with the Model entity
+  models       GamesOnModels[]
+  //Many to Many relatioship with the Genre entity
+  genres       Genre[]
+  //Many to Many relatioship with the Order entity
+  orders       GamesOnOrders[]
+  //One to Many relatioship with the Review entity
+  reviews      Review[]
+}
+
+model GameImage {
+  image_id     Int     @id @default(autoincrement())
+  image_url    String  @db.VarChar(255)
+  is_thumbnail Boolean @default(false)
+  // Many to One relationship with the Game entity
+  game         Game    @relation(fields: [game_id], references: [game_id])
+  game_id      Int
+}
+
+// Example of a platform: The Sony Playstation
+model Platform {
+  platform_id Int     @id @default(autoincrement())
+  name        String  @db.VarChar(100)
+  //One to Many raltionship with the Model entity
+  models      Model[]
+}
+
+// Examples of models: ps4, ps5
+model Model {
+  model_id    Int             @id @default(autoincrement())
+  name        String          @db.VarChar(100)
+  // Many to One relationship with the Platfrom entity
+  platform    Platform        @relation(fields: [platform_id], references: [platform_id])
+  platform_id Int
+  //Many to Many relationship with the Game entity
+  games       GamesOnModels[]
+}
+
+//The bridge table between Game and Model entities
+model GamesOnModels {
+  game          Game   @relation(fields: [game_id], references: [game_id])
+  game_id       Int
+  model         Model  @relation(fields: [model_id], references: [model_id])
+  model_id      Int
+  thumbnail_url String @db.VarChar(255)
+
+  @@id([game_id, model_id])
+}
+
+model Genre {
+  genre_id Int    @id @default(autoincrement())
+  name     String @db.VarChar(100)
+  //Many to Many relatioship with the Game entity
+  games    Game[]
+}
+
+model Order {
+  order_id   Int       @id @default(autoincrement())
+  address    String    @db.VarChar(255)
+  is_active  Boolean   @default(true)
+  start_date DateTime  @default(now())
+  end_date   DateTime?
+
+  //Many to One relationship with the Customer entity
+  customer    Customer        @relation(fields: [customer_id], references: [customer_id])
+  customer_id Int
+  //Many to Many relatioship with the Game entity
+  games       GamesOnOrders[]
+  //Optional One to One relatioship with the Transaction entity
+  transaction Transaction?
+}
+
+//The bridge table between Game and Order entities
+model GamesOnOrders {
+  game     Game  @relation(fields: [game_id], references: [game_id])
+  game_id  Int
+  order    Order @relation(fields: [order_id], references: [order_id])
+  order_id Int
+  quantity Int
+
+  @@id([game_id, order_id])
+}
+
+model Transaction {
+  transaction_id Int    @id @default(autoincrement())
+  payment_type   String @db.VarChar(100)
+  //One to One relatioship with the Order entity
+  order          Order  @relation(fields: [order_id], references: [order_id])
+  order_id       Int    @unique
+}
+
+model Review {
+  review_id   Int      @id @default(autoincrement())
+  stars       Int
+  description String?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
+  //Many to One relatioship with the Game entity
+  Game        Game     @relation(fields: [game_id], references: [game_id])
+  game_id     Int
+  //Many to One relatioship with the Customer entity
+  Customer    Customer @relation(fields: [customer_id], references: [customer_id])
+  customer_id Int
+}
