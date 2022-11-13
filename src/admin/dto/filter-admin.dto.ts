@@ -7,7 +7,4 @@ export class FilterAdminDto {
 
   @Field({ nullable: true })
   email?: string;
-
-  @Field({ nullable: true })
-  username?: string;
 }

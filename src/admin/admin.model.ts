@@ -12,9 +12,6 @@ export class Admin {
   password?: string;
 
   @Field()
-  username: string;
-
-  @Field()
   first_name: string;
 
   @Field()

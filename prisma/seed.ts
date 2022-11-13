@@ -8,7 +8,6 @@ const seedSuperAdmin = async () =>
     create: {
       email: process.env.SUPER_ADMIN_EMAIL,
       password: process.env.SUPER_ADMIN_PASSWORD,
-      username: process.env.SUPER_ADMIN_USERNAME,
       first_name: process.env.SUPER_ADMIN_FIRSTNAME,
       last_name: process.env.SUPER_ADMIN_LASTNAME,
       is_super_admin: true,

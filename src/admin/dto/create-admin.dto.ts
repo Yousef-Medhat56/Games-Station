@@ -6,9 +6,6 @@ export class CreateAdminDto {
   email: string;
 
   @Field()
-  username: string;
-
-  @Field()
   first_name: string;
 
   @Field()
