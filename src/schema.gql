@@ -1,0 +1,46 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Admin {
+  admin_id: ID!
+  email: String!
+  password: String
+  username: String!
+  first_name: String!
+  last_name: String!
+  is_super_admin: Boolean!
+}
+
+type Query {
+  """return all admins"""
+  admins(skip: Int, take: Int, cursor: JSON, where: JSON, orderBy: JSON): [Admin!]!
+
+  """return specific admin"""
+  admin(admin_id: String, email: String, username: String): Admin!
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+type Mutation {
+  createAdmin(input: CreateAdminDto!): Admin!
+  updateAdmin(input: UpdateAdminDto!, where: JSON!): Admin!
+  deleteAdmin(admin_id: String, email: String, username: String): Admin!
+}
+
+input CreateAdminDto {
+  email: String!
+  username: String!
+  first_name: String!
+  last_name: String!
+}
+
+input UpdateAdminDto {
+  password: String
+  first_name: String
+  last_name: String
+  is_super_Admin: String
+}
