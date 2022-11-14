@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Admin, Prisma } from '@prisma/client';
+import { handlePrismaError } from 'src/prisma/misc/prisma-errors.misc';
 
 @Injectable()
 export class AdminService {
@@ -9,9 +10,14 @@ export class AdminService {
   async find(
     adminWhereUniqueInput: Prisma.AdminWhereUniqueInput,
   ): Promise<Admin | null> {
-    return this.prisma.admin.findUnique({
-      where: adminWhereUniqueInput,
-    });
+    try {
+      const admin = await this.prisma.admin.findUnique({
+        where: adminWhereUniqueInput,
+      });
+      return admin;
+    } catch (err) {
+      handlePrismaError(err);
+    }
   }
 
   async findAll(params: {
@@ -21,25 +27,41 @@ export class AdminService {
     where?: Prisma.AdminWhereInput;
     orderBy?: Prisma.AdminOrderByWithRelationInput;
   }): Promise<Admin[]> {
-    return this.prisma.admin.findMany({ ...params });
+    try {
+      const adminsArr = await this.prisma.admin.findMany({ ...params });
+      return adminsArr;
+    } catch (err) {
+      handlePrismaError(err);
+    }
   }
 
   async create(data: Prisma.AdminCreateInput): Promise<Admin> {
-    return this.prisma.admin.create({
-      data,
-    });
+    try {
+      const admin = await this.prisma.admin.create({ data });
+      return admin;
+    } catch (err) {
+      handlePrismaError(err);
+    }
   }
 
   async update(params: {
     where: Prisma.AdminWhereUniqueInput;
     data: Prisma.AdminUpdateInput;
   }): Promise<Admin> {
-    return this.prisma.admin.update({ ...params });
+    try {
+      const admin = await this.prisma.admin.update({ ...params });
+      return admin;
+    } catch (err) {
+      handlePrismaError(err);
+    }
   }
 
   async delete(where: Prisma.AdminWhereUniqueInput): Promise<Admin> {
-    return this.prisma.admin.delete({
-      where,
-    });
+    try {
+      const admin = await this.prisma.admin.delete({ where });
+      return admin;
+    } catch (err) {
+      handlePrismaError(err);
+    }
   }
 }
