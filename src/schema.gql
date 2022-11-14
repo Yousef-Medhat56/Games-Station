@@ -16,7 +16,7 @@ type Query {
   admins(skip: Int, take: Int, cursor: JSON, where: JSON, orderBy: JSON): [Admin!]!
 
   """return specific admin"""
-  admin(admin_id: String, email: String): Admin!
+  admin(id: ID!): Admin!
 }
 
 """
@@ -26,8 +26,8 @@ scalar JSON
 
 type Mutation {
   createAdmin(input: CreateAdminDto!): Admin!
-  updateAdmin(input: UpdateAdminDto!, where: JSON!): Admin!
-  deleteAdmin(admin_id: String, email: String): Admin!
+  updateAdmin(id: ID!, input: UpdateAdminDto!): Admin!
+  deleteAdmin(id: ID!): Admin!
 }
 
 input CreateAdminDto {
@@ -40,5 +40,4 @@ input UpdateAdminDto {
   password: String
   first_name: String
   last_name: String
-  is_super_Admin: String
 }

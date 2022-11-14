@@ -10,7 +10,4 @@ export class UpdateAdminDto {
 
   @Field({ nullable: true })
   last_name?: string;
-
-  @Field({ nullable: true })
-  is_super_Admin?: string;
 }

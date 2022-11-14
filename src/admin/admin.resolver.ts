@@ -1,9 +1,7 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import GraphQLJSON from 'graphql-type-json';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Admin } from './admin.model';
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
-import { FilterAdminDto } from './dto/filter-admin.dto';
 import { GetAdminsDto } from './dto/get-admins.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 
@@ -17,8 +15,8 @@ export class AdminResolver {
   }
 
   @Query(() => Admin, { name: 'admin', description: 'return specific admin' })
-  getAdmin(@Args() FilterAdminDto: FilterAdminDto): Promise<Admin> {
-    return this.adminService.find(FilterAdminDto);
+  getAdmin(@Args('id', { type: () => ID }) admin_id: string): Promise<Admin> {
+    return this.adminService.find({ admin_id });
   }
 
   @Mutation(() => Admin)
@@ -28,17 +26,19 @@ export class AdminResolver {
 
   @Mutation(() => Admin)
   updateAdmin(
+    @Args('id', { type: () => ID }) admin_id: string,
     @Args('input') updateAdminDto: UpdateAdminDto,
-    @Args('where', { type: () => GraphQLJSON }) where: FilterAdminDto,
   ): Promise<Admin> {
     return this.adminService.update({
       data: updateAdminDto,
-      where,
+      where: { admin_id },
     });
   }
 
   @Mutation(() => Admin)
-  deleteAdmin(@Args() where: FilterAdminDto): Promise<Admin> {
-    return this.adminService.delete(where);
+  deleteAdmin(
+    @Args('id', { type: () => ID }) admin_id: string,
+  ): Promise<Admin> {
+    return this.adminService.delete({ admin_id });
   }
 }
