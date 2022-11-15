@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { Admin, Prisma } from '@prisma/client';
-import { handlePrismaError } from 'src/prisma/misc/prisma-errors.misc';
+import { Prisma } from '@prisma/client';
+import { handlePrismaError } from '../../prisma/misc/prisma-errors.misc';
+import { Admin } from './admin.model';
 
 @Injectable()
 export class AdminService {
@@ -9,7 +10,7 @@ export class AdminService {
 
   async find(
     adminWhereUniqueInput: Prisma.AdminWhereUniqueInput,
-  ): Promise<Admin | null> {
+  ): Promise<Admin | null | undefined> {
     try {
       const admin = await this.prisma.admin.findUnique({
         where: adminWhereUniqueInput,
@@ -26,7 +27,7 @@ export class AdminService {
     cursor?: Prisma.AdminWhereUniqueInput;
     where?: Prisma.AdminWhereInput;
     orderBy?: Prisma.AdminOrderByWithRelationInput;
-  }): Promise<Admin[]> {
+  }): Promise<Admin[] | undefined> {
     try {
       const adminsArr = await this.prisma.admin.findMany({ ...params });
       return adminsArr;
@@ -35,7 +36,7 @@ export class AdminService {
     }
   }
 
-  async create(data: Prisma.AdminCreateInput): Promise<Admin> {
+  async create(data: Prisma.AdminCreateInput): Promise<Admin | undefined> {
     try {
       const admin = await this.prisma.admin.create({ data });
       return admin;
@@ -47,7 +48,7 @@ export class AdminService {
   async update(params: {
     where: Prisma.AdminWhereUniqueInput;
     data: Prisma.AdminUpdateInput;
-  }): Promise<Admin> {
+  }): Promise<Admin | undefined> {
     try {
       const admin = await this.prisma.admin.update({ ...params });
       return admin;
@@ -56,7 +57,9 @@ export class AdminService {
     }
   }
 
-  async delete(where: Prisma.AdminWhereUniqueInput): Promise<Admin> {
+  async delete(
+    where: Prisma.AdminWhereUniqueInput,
+  ): Promise<Admin | undefined> {
     try {
       const admin = await this.prisma.admin.delete({ where });
       return admin;

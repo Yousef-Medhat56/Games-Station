@@ -9,7 +9,7 @@ export class Admin {
   email: string;
 
   @Field({ nullable: true })
-  password?: string;
+  password: string | null;
 
   @Field()
   first_name: string;
