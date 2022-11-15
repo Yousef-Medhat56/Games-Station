@@ -2,37 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { prismaMock } from '../../prisma/singleton';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AdminService } from './admin.service';
-import { Admin } from './admin.model';
-import { v4 as uuid4 } from 'uuid';
-import { CreateAdminDto } from './dto/create-admin.dto';
-import { UpdateAdminDto } from './dto/update-admin.dto';
-
-//Dummy data
-const adminIdDummy = uuid4();
-
-const newAdminDummy: CreateAdminDto = {
-  email: 'jonsnow@gmail.com',
-  first_name: 'Jon',
-  last_name: 'Snow',
-};
-
-const adminDummy: Admin = {
-  admin_id: adminIdDummy,
-  password: '####',
-  is_super_admin: false,
-  ...newAdminDummy,
-};
-
-const updatedAdminDummy: UpdateAdminDto = {
-  first_name: 'Aegon',
-  last_name: 'Targaryen',
-};
-
-const adminArrDummy: Admin[] = [
+import {
+  adminArrDummy,
   adminDummy,
-  { ...adminDummy, admin_id: uuid4(), email: 'jonsnow2@gmail.com' },
-  { ...adminDummy, admin_id: uuid4(), email: 'jonsnow3@gmail.com' },
-];
+  adminIdDummy,
+  newAdminDummy,
+  updatedAdminDummy,
+} from './dummy/admin.dummy';
 
 describe('Test Admin services', () => {
   let service: AdminService;
