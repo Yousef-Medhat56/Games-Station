@@ -2,21 +2,53 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+"""The Admin object"""
 type Admin {
+  """The admin ID"""
   admin_id: ID!
+
+  """The admin email"""
   email: String!
+
+  """The admin password"""
   password: String
+
+  """The admin first name"""
   first_name: String!
+
+  """The admin last name"""
   last_name: String!
+
+  """The admin state whether he is the super admin or not"""
   is_super_admin: Boolean!
 }
 
 type Query {
-  """return all admins"""
-  admins(skip: Int, take: Int, cursor: JSON, where: JSON, orderBy: JSON): [Admin!]!
+  """Return admins list"""
+  admins(
+    """
+    Specifies how many of the returned objects in the list should be skipped
+    """
+    skip: Int
 
-  """return specific admin"""
-  admin(id: ID!): Admin!
+    """Specifies how many objects should be returned in the list"""
+    take: Int
+
+    """Specifies the position for the list"""
+    cursor: JSON
+
+    """Filter the admin list by its properties"""
+    where: JSON
+
+    """Order the returned admin list by any property"""
+    orderBy: JSON
+  ): [Admin!]!
+
+  """Return one admin using his `id`"""
+  admin(
+    """The admin id"""
+    id: ID!
+  ): Admin!
 }
 
 """
@@ -25,19 +57,43 @@ The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://
 scalar JSON
 
 type Mutation {
+  """Create a new admin"""
   createAdmin(input: CreateAdminDto!): Admin!
-  updateAdmin(id: ID!, input: UpdateAdminDto!): Admin!
-  deleteAdmin(id: ID!): Admin!
+
+  """Update one admin using his `id`"""
+  updateAdmin(
+    """The admin id"""
+    id: ID!
+    input: UpdateAdminDto!
+  ): Admin!
+
+  """Delete one admin using his `id`"""
+  deleteAdmin(
+    """The admin id"""
+    id: ID!
+  ): Admin!
 }
 
+"""The input type for creating a new admin"""
 input CreateAdminDto {
+  """The admin email"""
   email: String!
+
+  """The admin first name"""
   first_name: String!
+
+  """The admin last name"""
   last_name: String!
 }
 
+"""The input type for creating a new admin"""
 input UpdateAdminDto {
+  """The admin password"""
   password: String
+
+  """The admin first name"""
   first_name: String
+
+  """The admin last name"""
   last_name: String
 }

@@ -3,13 +3,13 @@ const prisma = new PrismaClient();
 
 const seedSuperAdmin = async () =>
   await prisma.admin.upsert({
-    where: { email: process.env.SUPER_ADMIN_EMAIL },
+    where: { email: process.env.SUPER_ADMIN_EMAIL as string },
     update: {},
     create: {
-      email: process.env.SUPER_ADMIN_EMAIL,
-      password: process.env.SUPER_ADMIN_PASSWORD,
-      first_name: process.env.SUPER_ADMIN_FIRSTNAME,
-      last_name: process.env.SUPER_ADMIN_LASTNAME,
+      email: process.env.SUPER_ADMIN_EMAIL as string,
+      password: process.env.SUPER_ADMIN_PASSWORD as string,
+      first_name: process.env.SUPER_ADMIN_FIRSTNAME as string,
+      last_name: process.env.SUPER_ADMIN_LASTNAME as string,
       is_super_admin: true,
     },
   });

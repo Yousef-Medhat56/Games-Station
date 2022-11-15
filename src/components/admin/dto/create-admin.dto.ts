@@ -1,13 +1,13 @@
 import { Field, InputType } from '@nestjs/graphql';
 
-@InputType()
+@InputType({ description: 'The input type for creating a new admin' })
 export class CreateAdminDto {
-  @Field()
+  @Field({ description: 'The admin email' })
   email: string;
 
-  @Field()
+  @Field({ description: 'The admin first name' })
   first_name: string;
 
-  @Field()
+  @Field({ description: 'The admin last name' })
   last_name: string;
 }

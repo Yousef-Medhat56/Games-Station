@@ -1,22 +1,25 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
+@ObjectType({ description: 'The Admin object' })
 export class Admin {
-  @Field((type) => ID)
+  @Field((type) => ID, { description: 'The admin ID' })
   admin_id: string;
 
-  @Field()
+  @Field({ description: 'The admin email' })
   email: string;
 
-  @Field({ nullable: true })
+  @Field(() => String, { nullable: true, description: 'The admin password' })
   password: string | null;
 
-  @Field()
+  @Field({ description: 'The admin first name' })
   first_name: string;
 
-  @Field()
+  @Field({ description: 'The admin last name' })
   last_name: string;
 
-  @Field()
+  @Field({
+    description: 'The admin state whether he is the super admin or not',
+    defaultValue: false,
+  })
   is_super_admin: boolean;
 }
